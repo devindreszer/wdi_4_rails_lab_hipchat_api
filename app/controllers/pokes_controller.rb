@@ -11,7 +11,7 @@ class PokesController < ApplicationController
     @poke = Poke.new(poke_params)
 
     if @poke.save
-      public_poke(@poke)
+      @poke.is_private ? private_poke(@poke) : public_poke(@poke)
       redirect_to @poke, success: 'Target has been poked!'
     else
       flash.now.alert = "Slight problem: #{@poke.errors.full_messages.join(', ')}"
@@ -26,7 +26,16 @@ class PokesController < ApplicationController
   end
 
   def public_poke(poke)
-    client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
-    client[Poke::ROOM].send('', "@#{poke.target_username} #{poke.content} by #{poke.author_line}: #{request.original_url}", :message_format => 'text')
+    Poke::CLIENT[Poke::ROOM].send('', "@#{poke.target_username} #{poke.content} by #{poke.author_line}: #{poke_url(poke)}}", :message_format => 'text')
+  end
+
+  def private_poke(poke)
+    participants = Poke::CLIENT[Poke::ROOM].get_room["participants"]
+    target = nil
+    participants.each do |participant|
+      target = participant if participant["mention_name"] == "#{poke.target_username}"
+    end
+    id = target["id"]
+    Poke::CLIENT.user(id).send("@#{poke.target_username} #{poke.content} by #{poke.author_line}: #{poke_url(poke)}")
   end
 end
