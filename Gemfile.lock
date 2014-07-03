@@ -42,12 +42,22 @@ GEM
     coffee-script-source (1.7.0)
     columnize (0.8.9)
     debugger-linecache (1.2.0)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
+    dotenv-rails (0.11.1)
+      dotenv (= 0.11.1)
     erubis (2.7.0)
     execjs (2.2.1)
     foundation-rails (5.3.0.1)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
     hike (1.2.3)
+    hipchat (1.2.0)
+      httparty
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.9)
     jquery-rails (3.1.1)
       railties (>= 3.0, < 5.0)
@@ -60,6 +70,7 @@ GEM
     mime-types (1.25.1)
     minitest (5.3.5)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     pg (0.17.1)
     polyglot (0.3.5)
     pry (0.10.0)
@@ -126,7 +137,9 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
+  dotenv-rails
   foundation-rails
+  hipchat
   jquery-rails
   pg
   pry-byebug
